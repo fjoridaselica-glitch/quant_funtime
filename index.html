@@ -5,22 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fjorida Selica | QUANT FINANCE LIBRARY</title>
     <style>
-        body { font-family: 'Inter', -apple-system, sans-serif; line-height: 1.6; color: #333; max-width: 850px; margin: 0 auto; padding: 40px 20px; background-color: #f8f9fa; }
-        header { text-align: center; padding-bottom: 40px; border-bottom: 3px solid #0366d6; margin-bottom: 40px; }
-        h1 { margin: 0; color: #1a1a1a; font-size: 2.5rem; }
-        .subtitle { color: #666; font-size: 1.2rem; margin-top: 10px; }
-        .section-title { border-left: 5px solid #0366d6; padding-left: 15px; margin: 40px 0 20px; color: #2c3e50; }
-        .paper-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; transition: transform 0.2s; }
-        .paper-card:hover { transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .paper-link { font-weight: bold; color: #0366d6; text-decoration: none; font-size: 1.2rem; }
-        .paper-link:hover { text-decoration: underline; }
-        .abstract { font-size: 0.95rem; color: #555; margin-top: 10px; }
+        /* QUANT FINANCE DARK THEME */
+        body { 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            line-height: 1.6; 
+            color: #dcdcdc; /* LIGHT GREY TEXT */
+            max-width: 850px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
+            background-color: #2c3e50; /* DARK CHARCOAL BACKGROUND */
+        }
+        
+        header { 
+            text-align: center; 
+            padding-bottom: 40px; 
+            border-bottom: 3px solid #b388ff; /* PURPLE NEON ACCENT */
+            margin-bottom: 40px; 
+        }
+        
+        h1 { 
+            margin: 0; 
+            color: #ffffff; /* WHITE HEADLINE */
+            font-size: 2.5rem; 
+        }
+        
+        .subtitle { 
+            color: #b3b3b3; /* MUTED SUBTITLE */
+            font-size: 1.2rem; 
+            margin-top: 10px; 
+        }
+        
+        .section-title { 
+            border-left: 5px solid #b388ff; /* PURPLE NEON ACCENT */
+            padding-left: 15px; 
+            margin: 40px 0 20px; 
+            color: #ffffff; 
+        }
+        
+        .paper-card { 
+            background: #34495e; /* SLIGHTLY LIGHTER CHARCOAL */
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
+            margin-bottom: 20px; 
+            border: 1px solid #455a64; /* SUBTLE BORDER */
+            transition: all 0.3s ease; 
+        }
+        
+        .paper-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 8px 15px rgba(0,0,0,0.3); 
+            border-color: #b388ff; /* GLOW ON HOVER */
+        }
+        
+        .paper-link { 
+            font-weight: bold; 
+            color: #cc99ff; /* LIGHT PURPLE LINK */
+            text-decoration: none; 
+            font-size: 1.2rem; 
+        }
+        
+        .paper-link:hover { 
+            text-decoration: underline; 
+        }
+        
+        .abstract { 
+            font-size: 0.95rem; 
+            color: #c0c0c0; /* GREY ABSTRACT */
+            margin-top: 10px; 
+        }
+        
+        /* Contact links need a light color too */
+        p a { color: #dcdcdc; text-decoration: none; border-bottom: 1px dashed #666; }
+        p a:hover { color: #b388ff; border-bottom: 1px solid #b388ff; }
     </style>
 </head>
 <body>
     <div style="text-align: center; padding: 20px 0;">
-    <img src="./LOGO.jpg" alt="Logo" style="width: 150px; height: auto; border-radius: 50%; border: 2px solid #0366d6; display: block; margin: 0 auto;">
-</div>
+        <img src="LOGO.jpg" alt="Logo" style="width: 200px; height: auto; display: block; margin: 0 auto; filter: drop-shadow(0 0 10px rgba(179,136,255,0.3));">
+    </div>
     <header>
         <h1>Fjorida Selica</h1>
         <p class="subtitle">Quantitative Researcher</p>
