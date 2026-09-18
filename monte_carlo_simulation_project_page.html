@@ -289,17 +289,11 @@ import pandas as pd
 import yfinance as yf
 import matplotlib.pyplot as plt
 
-# Set seed for reproducibility
-np.random.seed(42)
-
-# Custom Tickers & Non-Equal Asset Allocation
 tickers = ['AAPL', 'MSFT', 'JPM', 'XOM']
 weights = np.array([0.40, 0.30, 0.15, 0.15])  # 70% Growth / 30% Value
 
-# Fetch Historical Data
 df = yf.download(tickers, start='2023-01-01', end='2024-01-01', auto_adjust=True)['Close'].dropna()
 
-# Calculate Returns & Covariance Matrix
 returns = df.pct_change().dropna()
 mean_daily_returns = returns.mean()
 cov_matrix = returns.cov()
@@ -307,7 +301,6 @@ cov_matrix = returns.cov()
 # Cholesky Decomposition
 L = np.linalg.cholesky(cov_matrix)
 
-# Updated Parameters
 num_simulations = 150
 time_horizon = 90
 initial_portfolio = 30000
@@ -317,7 +310,6 @@ portfolio_sims = np.zeros((time_horizon, num_simulations))
 # Drift adjustment (Itô's Lemma correction)
 drift = mean_daily_returns.values - (0.5 * np.diag(cov_matrix))
 
-# Run Simulation Loop
 for i in range(num_simulations):
     Z = np.random.normal(size=(time_horizon, len(weights)))
     correlated_returns = drift + np.dot(Z, L.T)
