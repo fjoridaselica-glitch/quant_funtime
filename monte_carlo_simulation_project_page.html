@@ -251,36 +251,50 @@
                     Below is a snippet illustrating how historical returns are fetched, converted to covariance matrices, and sampled via Cholesky decomposition using Python and NumPy:
                 </p>
 
-<pre class="bg-[#0d1117] p-4 rounded-lg border border-gray-800 font-mono text-xs text-gray-300 overflow-x-auto">
-<span class="text-purple-400">import</span> numpy <span class="text-purple-400">as</span> np
-<span class="text-purple-400">import</span> pandas <span class="text-purple-400">as</span> pd
+<pre><code class="language-python">import numpy as np
+import pandas as pd
+import yfinance as yf
+import matplotlib.pyplot as plt
 
-<span class="text-gray-500"># 1. Calculate Daily Log Returns & Statistics</span>
-returns = mean_returns = df.pct_change()
+# Tickers
+tickers = ['TLS.AX', 'NAB.AX', 'WBC.AX', 'STO.AX']
+df = yf.download(tickers, start='2023-01-01', end='2024-01-01', auto_adjust=True)['Close']
+
+# Drops rows with missing values
+df = df.dropna()
+
+# Calculates Returns and Covariance
+returns = df.pct_change().dropna()
 mean_daily_returns = returns.mean()
 cov_matrix = returns.cov()
 
-<span class="text-gray-500"># 2. Compute Cholesky Lower Triangular Matrix L</span>
+# Computes Cholesky Matrix L
 L = np.linalg.cholesky(cov_matrix)
 
-<span class="text-gray-500"># 3. Perform Monte Carlo Loops</span>
+# Monte Carlo Parameters
 num_simulations = 100
 time_horizon = 100
 portfolio_sims = np.full((time_horizon, num_simulations), 0.0)
 
 initial_portfolio = 10000
-weights = np.array([0.25, 0.25, 0.25, 0.25]) <span class="text-gray-500"># Equal weighting</span>
+weights = np.array([0.25, 0.25, 0.25, 0.25])
 
-<span class="text-purple-400">for</span> i <span class="text-purple-400">in</span> range(num_simulations):
-    <span class="text-gray-500"># Draw independent random normal samples (Z)</span>
+# Runs Simulation Loop
+for i in range(num_simulations):
     Z = np.random.normal(size=(time_horizon, len(weights)))
-    
-    <span class="text-gray-500"># Correlate returns: Daily_Return = Mean + (Z @ L.T)</span>
-    correlated_returns = mean_daily_returns.values + np.inner(Z, L)
-    
-    <span class="text-gray-500"># Calculate portfolio daily return & cumulative growth</span>
+    correlated_returns = mean_daily_returns.values + np.dot(Z, L.T)
     portfolio_returns = np.dot(correlated_returns, weights)
     portfolio_sims[:, i] = np.cumprod(portfolio_returns + 1) * initial_portfolio
+
+# Renders Plot
+plt.figure(figsize=(10, 6))
+plt.plot(portfolio_sims)
+plt.title('Monte Carlo Portfolio Simulation (ASX Assets)')
+plt.xlabel('Days')
+plt.ylabel('Portfolio Value ($)')
+plt.grid(True)
+plt.show()</code>
+                
 </pre>
             </div>
         </section>
