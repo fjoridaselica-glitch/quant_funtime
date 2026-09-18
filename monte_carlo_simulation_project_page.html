@@ -289,43 +289,48 @@ import pandas as pd
 import yfinance as yf
 import matplotlib.pyplot as plt
 
-# Tickers
-tickers = ['TLS.AX', 'NAB.AX', 'WBC.AX', 'STO.AX']
-df = yf.download(tickers, start='2023-01-01', end='2024-01-01', auto_adjust=True)['Close']
+# Set seed for reproducibility
+np.random.seed(42)
 
-# Drops rows with missing values
-df = df.dropna()
+# Custom Tickers & Non-Equal Asset Allocation
+tickers = ['AAPL', 'MSFT', 'JPM', 'XOM']
+weights = np.array([0.40, 0.30, 0.15, 0.15])  # 70% Growth / 30% Value
 
-# Calculates Returns and Covariance
+# Fetch Historical Data
+df = yf.download(tickers, start='2023-01-01', end='2024-01-01', auto_adjust=True)['Close'].dropna()
+
+# Calculate Returns & Covariance Matrix
 returns = df.pct_change().dropna()
 mean_daily_returns = returns.mean()
 cov_matrix = returns.cov()
 
-# Computes Cholesky Matrix L
+# Cholesky Decomposition
 L = np.linalg.cholesky(cov_matrix)
 
-# Monte Carlo Parameters
-num_simulations = 100
-time_horizon = 100
-portfolio_sims = np.full((time_horizon, num_simulations), 0.0)
+# Updated Parameters
+num_simulations = 150
+time_horizon = 90
+initial_portfolio = 30000
 
-initial_portfolio = 10000
-weights = np.array([0.25, 0.25, 0.25, 0.25])
+portfolio_sims = np.zeros((time_horizon, num_simulations))
 
-# Runs Simulation Loop
+# Drift adjustment (Itô's Lemma correction)
+drift = mean_daily_returns.values - (0.5 * np.diag(cov_matrix))
+
+# Run Simulation Loop
 for i in range(num_simulations):
     Z = np.random.normal(size=(time_horizon, len(weights)))
-    correlated_returns = mean_daily_returns.values + np.dot(Z, L.T)
+    correlated_returns = drift + np.dot(Z, L.T)
     portfolio_returns = np.dot(correlated_returns, weights)
     portfolio_sims[:, i] = np.cumprod(portfolio_returns + 1) * initial_portfolio
 
-# Renders Plot
+# Visual Output
 plt.figure(figsize=(10, 6))
-plt.plot(portfolio_sims)
-plt.title('Monte Carlo Portfolio Simulation (ASX Assets)')
+plt.plot(portfolio_sims, alpha=0.35)
+plt.title(f'Monte Carlo Portfolio Simulation ({", ".join(tickers)})')
 plt.xlabel('Days')
 plt.ylabel('Portfolio Value ($)')
-plt.grid(True)
+plt.grid(True, linestyle='--', alpha=0.5)
 plt.show()</code></pre>
                 </div>
             </div>
