@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stochastic Capital Trajectories — Quantitative Portfolio Research</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- MathJax for rendering equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Google Fonts: Cormorant Garamond (Serif), Plus Jakarta Sans (Sans-serif), JetBrains Mono (Monospace) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-cream: #faf9f5;
+            --card-white: #ffffff;
+            --text-main: #0a0e1a;
+            --text-muted: #525866;
+            --border-light: #e2e0d8;
+            --cobalt: #1d4ed8;
+            --cobalt-soft: #eff6ff;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-cream);
+            color: var(--text-main);
+            letter-spacing: -0.011em;
+        }
+
+        .font-serif-heading {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+        }
+
+        code, pre, .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Editorial Border and Card Utilities */
+        .raum-border-b {
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .raum-border-t {
+            border-top: 1px solid var(--border-light);
+        }
+
+        .raum-border-all {
+            border: 1px solid var(--border-light);
+        }
+
+        .raum-card {
+            background-color: var(--card-white);
+            border: 1px solid var(--border-light);
+            border-radius: 0.5rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .raum-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 12px 30px -10px rgba(10, 14, 26, 0.04);
+        }
+
+        .cobalt-btn {
+            background-color: var(--text-main);
+            color: #ffffff;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cobalt-btn:hover {
+            background-color: var(--cobalt);
+            box-shadow: 0 8px 20px -4px rgba(29, 78, 216, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Custom Scrollbars */
+        pre::-webkit-scrollbar {
+            height: 5px;
+        }
+        pre::-webkit-scrollbar-track {
+            background: #f1f0ea;
+        }
+        pre::-webkit-scrollbar-thumb {
+            background: #d1cfc7;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-32 antialiased selection:bg-blue-100 selection:text-blue-900">
+
+    <!-- Minimalist Architectural Header -->
+    <header class="raum-border-b bg-white/80 sticky top-0 z-50 backdrop-blur-md">
+        <div class="max-w-6xl mx-auto px-6 md:px-10 py-5 flex justify-between items-center text-xs tracking-wider uppercase">
+            <div class="flex items-center space-x-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-700 inline-block"></span>
+                <span class="font-bold text-slate-900 font-mono tracking-tight text-sm">QUANT_RESEARCH / LAB_01</span>
+            </div>
+            <nav class="hidden sm:flex items-center space-x-8 text-slate-500 font-medium">
+                <a href="#simulator" class="hover:text-slate-900 transition-colors">01. Interactive Visualizer</a>
+                <a href="#math" class="hover:text-slate-900 transition-colors">02. Mathematical Framework</a>
+                <a href="#python" class="hover:text-slate-900 transition-colors">03. Python Backend</a>
+            </nav>
+            <a href="index.html" class="font-mono text-slate-600 hover:text-blue-700 transition-colors flex items-center gap-1.5 font-semibold">
+                <span>&larr; PORTFOLIO</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 md:px-10 mt-12 md:mt-16 space-y-20">
+
+        <!-- Hero Section: Editorial & Spatial -->
+        <section class="space-y-8 raum-border-b pb-12">
+            <div class="flex flex-wrap items-center gap-3 text-xs font-mono text-slate-500">
+                <span class="px-3 py-1 bg-white border border-slate-200 rounded-full text-blue-700 font-semibold">PROJECT 01</span>
+                <span>/</span>
+                <span>MONTE CARLO METHODOLOGY</span>
+                <span>/</span>
+                <span>STOCHASTIC CALCULUS</span>
+            </div>
+
+            <div class="space-y-4">
+                <h1 class="font-serif-heading text-4xl sm:text-6xl md:text-7xl font-normal text-slate-950 leading-[1.05] tracking-tight max-w-4xl">
+                    Stochastic Capital Trajectories: <span class="italic font-light text-slate-700">Multi-Asset Monte Carlo Framework</span>
+                </h1>
+                <p class="text-base md:text-lg text-slate-600 max-w-2xl font-light leading-relaxed">
+                    An architectural study in quantitative risk analysis. Simulating multivariate portfolio paths via log-normal geometric Brownian motion, historical covariance matrices ($\Sigma$), It&ocirc;'s Lemma drift adjustments, and Cholesky matrix decomposition.
+                </p>
+            </div>
+
+            <!-- Spatial Metadata Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 raum-border-t pt-8 font-mono text-xs text-slate-600">
+                <div>
+                    <span class="text-slate-400 block text-[10px] uppercase tracking-widest mb-1">AUTHOR / RESEARCHER</span>
+                    <span class="text-slate-900 font-semibold">Quantitative Portfolio Lab</span>
+                </div>
+                <div>
+                    <span class="text-slate-400 block text-[10px] uppercase tracking-widest mb-1">ASSET BASKET</span>
+                    <span class="text-slate-900 font-semibold">AAPL, MSFT, JPM, XOM</span>
+                </div>
+                <div>
+                    <span class="text-slate-400 block text-[10px] uppercase tracking-widest mb-1">ALLOCATION WEIGHTS</span>
+                    <span class="text-slate-900 font-semibold">40% / 30% / 15% / 15%</span>
+                </div>
+                <div>
+                    <span class="text-slate-400 block text-[10px] uppercase tracking-widest mb-1">STOCHASTIC SHOCK</span>
+                    <span class="text-slate-900 font-semibold">Correlated Normal Vector</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Interactive Web Simulator Section -->
+        <section id="simulator" class="space-y-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <span class="text-xs font-mono text-blue-700 font-semibold tracking-wider uppercase">SECTION 01</span>
+                    <h2 class="font-serif-heading text-3xl md:text-4xl font-normal text-slate-900 mt-1">
+                        Interactive Capital Trajectory Visualizer
+                    </h2>
+                </div>
+                <p class="text-xs text-slate-500 font-mono max-w-sm">
+                    Simulates 1D aggregate portfolio performance. For multi-asset covariance matrix coupling, refer to the Python model below.
+                </p>
+            </div>
+
+            <!-- Main Interactive Card -->
+            <div class="raum-card p-6 md:p-10 space-y-8">
+
+                <!-- Architectural Disclaimer Banner -->
+                <div class="p-5 rounded-md bg-[#f5f4ee] border border-slate-200/80 text-xs font-mono text-slate-600 leading-relaxed space-y-2">
+                    <div class="flex items-center space-x-2 text-slate-900 font-bold uppercase tracking-wider text-[11px]">
+                        <svg class="w-4 h-4 text-blue-700 fill-current" viewBox="0 0 20 20"><path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"/></svg>
+                        <span>Model Architecture Note</span>
+                    </div>
+                    <p>
+                        <strong class="text-slate-900">Browser Visualizer vs. Full Python Model:</strong> This interactive canvas simulates an aggregated macro portfolio using 1D Geometric Brownian Motion with an assumed 8% baseline annual drift ($\mu$) and user-defined annual volatility ($\sigma$).
+                    </p>
+                    <p>
+                        The true multi-asset quantitative engine—incorporating real Yahoo Finance price series, individual asset weight vectors ($w$), covariance matrix generation ($\Sigma$), and Cholesky matrix lower-triangular decomposition ($L \cdot L^T$)—is fully computed in the <a href="#python" class="text-blue-700 underline font-semibold hover:text-blue-900">Python backend script below</a>.
+                    </p>
+                </div>
+
+                <!-- Parameter Input Controls -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 font-mono text-xs">
+                    <div class="space-y-2">
+                        <label class="block text-slate-500 font-medium">INITIAL CAPITAL ($)</label>
+                        <input type="number" id="param-capital" value="30000" step="1000" class="w-full bg-slate-50 border border-slate-200 rounded px-3.5 py-2.5 text-slate-900 font-semibold focus:outline-none focus:border-blue-600 transition-all">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-slate-500 font-medium">TIME HORIZON (DAYS)</label>
+                        <input type="number" id="param-days" value="90" min="10" max="365" class="w-full bg-slate-50 border border-slate-200 rounded px-3.5 py-2.5 text-slate-900 font-semibold focus:outline-none focus:border-blue-600 transition-all">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-slate-500 font-medium">SIMULATION COUNT</label>
+                        <input type="number" id="param-sims" value="150" min="10" max="300" class="w-full bg-slate-50 border border-slate-200 rounded px-3.5 py-2.5 text-slate-900 font-semibold focus:outline-none focus:border-blue-600 transition-all">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-slate-500 font-medium">ANN. VOLATILITY (%)</label>
+                        <input type="number" id="param-vol" value="20" min="5" max="80" class="w-full bg-slate-50 border border-slate-200 rounded px-3.5 py-2.5 text-slate-900 font-semibold focus:outline-none focus:border-blue-600 transition-all">
+                    </div>
+                </div>
+
+                <!-- Action Button Row -->
+                <div class="flex justify-between items-center pt-2">
+                    <div class="text-xs text-slate-400 font-mono hidden sm:block">
+                        Engine: Standard Normal Box-Muller Transforms
+                    </div>
+                    <button id="run-sim-btn" onclick="runSimulation()" class="cobalt-btn font-mono text-xs font-semibold px-6 py-3 rounded uppercase tracking-wider flex items-center space-x-2 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>Execute Simulation</span>
+                    </button>
+                </div>
+
+                <!-- Canvas Chart Area -->
+                <div class="relative w-full h-80 sm:h-96 bg-slate-50/50 rounded border border-slate-200 p-4">
+                    <canvas id="monteCarloChart"></canvas>
+                </div>
+
+                <!-- Architectural Metric Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 font-mono text-xs raum-border-t pt-6">
+                    <div class="space-y-1">
+                        <span class="text-slate-400 block text-[10px] uppercase tracking-widest">EXPECTED MEAN VALUE</span>
+                        <span id="stat-mean" class="text-2xl font-semibold text-slate-900">$0.00</span>
+                    </div>
+                    <div class="space-y-1">
+                        <span class="text-slate-400 block text-[10px] uppercase tracking-widest">BEST TRAJECTORY (MAX)</span>
+                        <span id="stat-best" class="text-2xl font-semibold text-blue-700">$0.00</span>
+                    </div>
+                    <div class="space-y-1">
+                        <span class="text-slate-400 block text-[10px] uppercase tracking-widest">WORST TRAJECTORY (MIN)</span>
+                        <span id="stat-worst" class="text-2xl font-semibold text-slate-500">$0.00</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mathematical Framework Section -->
+        <section id="math" class="space-y-8 raum-border-t pt-16">
+            <div>
+                <span class="text-xs font-mono text-blue-700 font-semibold tracking-wider uppercase">SECTION 02</span>
+                <h2 class="font-serif-heading text-3xl md:text-4xl font-normal text-slate-900 mt-1">
+                    Mathematical Architecture
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Concept 1 -->
+                <div class="raum-card p-6 space-y-3">
+                    <div class="text-xs font-mono text-blue-700 font-bold">01. GEOMETRIC BROWNIAN MOTION</div>
+                    <h3 class="font-serif-heading text-xl font-medium text-slate-900">Log-Normal Asset Dynamics</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Stock price movements are modeled using continuous-time stochastic differential equations (SDEs), ensuring asset values remain positive while capturing drift and random shocks.
+                    </p>
+                    <div class="bg-slate-50 p-3 rounded text-xs font-mono text-slate-800 text-center border border-slate-200">
+                        $$dS_t = \mu S_t dt + \sigma S_t dW_t$$
+                    </div>
+                </div>
+
+                <!-- Concept 2 -->
+                <div class="raum-card p-6 space-y-3">
+                    <div class="text-xs font-mono text-blue-700 font-bold">02. ITÔ'S LEMMA DRIFT</div>
+                    <h3 class="font-serif-heading text-xl font-medium text-slate-900">Volatility Drag Adjustment</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Compounding discrete daily returns creates variance drag. We subtract $\frac{1}{2}\sigma^2$ from mean daily returns to ensure unbiased log return projections over time horizons.
+                    </p>
+                    <div class="bg-slate-50 p-3 rounded text-xs font-mono text-slate-800 text-center border border-slate-200">
+                        $$\text{Drift} = \mu - \frac{1}{2}\sigma^2$$
+                    </div>
+                </div>
+
+                <!-- Concept 3 -->
+                <div class="raum-card p-6 space-y-3">
+                    <div class="text-xs font-mono text-blue-700 font-bold">03. CHOLESKY DECOMPOSITION</div>
+                    <h3 class="font-serif-heading text-xl font-medium text-slate-900">Multivariate Cross-Correlation</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        To maintain historical co-movement between stocks (e.g., AAPL and MSFT), independent standard normal random vectors $Z$ are transformed using lower-triangular matrix $L$.
+                    </p>
+                    <div class="bg-slate-50 p-3 rounded text-xs font-mono text-slate-800 text-center border border-slate-200">
+                        $$\Sigma = L \cdot L^T \implies X = L \cdot Z$$
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Python Code Implementation Section -->
+        <section id="python" class="space-y-6 raum-border-t pt-16">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <span class="text-xs font-mono text-blue-700 font-semibold tracking-wider uppercase">SECTION 03</span>
+                    <h2 class="font-serif-heading text-3xl md:text-4xl font-normal text-slate-900 mt-1">
+                        Quantitative Python Engine
+                    </h2>
+                </div>
+                <div class="text-xs font-mono text-slate-500">
+                    File: <span class="text-slate-900 font-semibold">portfolio_simulation.py</span>
+                </div>
+            </div>
+
+            <!-- Code Container -->
+            <div class="raum-card overflow-hidden">
+                <div class="bg-slate-100 px-6 py-3 raum-border-b flex justify-between items-center text-xs font-mono text-slate-600">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+                        <span class="ml-2 font-medium">Python 3.11 / NumPy / Yahoo Finance</span>
+                    </div>
+                    <span>150 Sims &bull; 90 Days &bull; $30,000 Portfolio</span>
+                </div>
+
+                <div class="p-6 bg-[#0f1422] text-slate-200 overflow-x-auto text-xs font-mono leading-relaxed">
+<pre><code class="language-python"><span class="text-blue-400">import</span> numpy <span class="text-blue-400">as</span> np
+<span class="text-blue-400">import</span> pandas <span class="text-blue-400">as</span> pd
+<span class="text-blue-400">import</span> yfinance <span class="text-blue-400">as</span> yf
+<span class="text-blue-400">import</span> matplotlib.pyplot <span class="text-blue-400">as</span> plt
+
+<span class="text-slate-500"># 1. Deterministic Random Seed for Scientific Reproducibility</span>
+np.random.seed(<span class="text-emerald-400">42</span>)
+
+<span class="text-slate-500"># 2. Asset Universe and Allocation Weights (70% Growth / 30% Value Core)</span>
+tickers = [<span class="text-amber-300">'AAPL'</span>, <span class="text-amber-300">'MSFT'</span>, <span class="text-amber-300">'JPM'</span>, <span class="text-amber-300">'XOM'</span>]
+weights = np.array([<span class="text-emerald-400">0.40</span>, <span class="text-emerald-400">0.30</span>, <span class="text-emerald-400">0.15</span>, <span class="text-emerald-400">0.15</span>])
+
+<span class="text-slate-500"># 3. Retrieve Historical Price Data</span>
+df = yf.download(tickers, start=<span class="text-amber-300">'2023-01-01'</span>, end=<span class="text-amber-300">'2024-01-01'</span>, auto_adjust=<span class="text-blue-400">True</span>)[<span class="text-amber-300">'Close'</span>].dropna()
+
+<span class="text-slate-500"># 4. Returns & Covariance Matrix Computation</span>
+returns = df.pct_change().dropna()
+mean_daily_returns = returns.mean()
+cov_matrix = returns.cov()
+
+<span class="text-slate-500"># 5. Lower Triangular Cholesky Matrix Decomposition</span>
+L = np.linalg.cholesky(cov_matrix)
+
+<span class="text-slate-500"># 6. Hyperparameters</span>
+num_simulations = <span class="text-emerald-400">150</span>
+time_horizon = <span class="text-emerald-400">90</span>
+initial_portfolio = <span class="text-emerald-400">30000</span>
+
+portfolio_sims = np.zeros((time_horizon, num_simulations))
+
+<span class="text-slate-500"># 7. Itô's Lemma Drift Adjustment (mu - 0.5 * sigma^2)</span>
+drift = mean_daily_returns.values - (<span class="text-emerald-400">0.5</span> * np.diag(cov_matrix))
+
+<span class="text-slate-500"># 8. Correlated Monte Carlo Path Generation</span>
+<span class="text-blue-400">for</span> i <span class="text-blue-400">in</span> <span class="text-blue-400">range</span>(num_simulations):
+    Z = np.random.normal(size=(time_horizon, <span class="text-blue-400">len</span>(weights)))
+    correlated_returns = drift + np.dot(Z, L.T)
+    portfolio_returns = np.dot(correlated_returns, weights)
+    portfolio_sims[:, i] = np.cumprod(portfolio_returns + <span class="text-emerald-400">1</span>) * initial_portfolio
+
+<span class="text-slate-500"># 9. Output Visualization</span>
+plt.figure(figsize=(<span class="text-emerald-400">10</span>, <span class="text-emerald-400">6</span>))
+plt.plot(portfolio_sims, alpha=<span class="text-emerald-400">0.3</span>, color=<span class="text-amber-300">'#1d4ed8'</span>)
+plt.title(<span class="text-amber-300">'Monte Carlo Correlated Portfolio Simulation'</span>)
+plt.xlabel(<span class="text-amber-300">'Days'</span>)
+plt.ylabel(<span class="text-amber-300">'Portfolio Value ($)'</span>)
+plt.grid(<span class="text-blue-400">True</span>, linestyle=<span class="text-amber-300">'--'</span>, alpha=<span class="text-emerald-400">0.4</span>)
+plt.show()</code></pre>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Minimalist Footer -->
+    <footer class="max-w-6xl mx-auto px-6 md:px-10 mt-24 pt-8 raum-border-t text-xs font-mono text-slate-500 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div>
+            &copy; 2026 Quantitative Research Portfolio. All rights reserved.
+        </div>
+        <div class="flex space-x-6">
+            <a href="index.html" class="hover:text-slate-900 transition-colors">Portfolio Home</a>
+            <a href="#simulator" class="hover:text-slate-900 transition-colors">Back to Top &uarr;</a>
+        </div>
+    </footer>
+
+    <!-- JavaScript Simulation Engine -->
+    <script>
+        let chartInstance = null;
+
+        // Box-Muller Transformation for standard normal distribution
+        function randomNormal() {
+            let u1 = Math.random();
+            let u2 = Math.random();
+            while(u1 === 0) u1 = Math.random();
+            while(u2 === 0) u2 = Math.random();
+            return Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+        }
+
+        function runSimulation() {
+            const initialCapital = parseFloat(document.getElementById('param-capital').value) || 30000;
+            const days = parseInt(document.getElementById('param-days').value) || 90;
+            const numSims = parseInt(document.getElementById('param-sims').value) || 150;
+            const annVol = (parseFloat(document.getElementById('param-vol').value) || 20) / 100;
+
+            const dailyDrift = 0.08 / 252; // Assume 8% baseline annual drift
+            const dailyVol = annVol / Math.sqrt(252);
+
+            const labels = Array.from({length: days + 1}, (_, i) => `Day ${i}`);
+            const datasets = [];
+            const finalValues = [];
+
+            // Raum-inspired subtle blue line shades
+            const cobaltShades = [
+                'rgba(29, 78, 216, 0.45)',   // Royal Cobalt
+                'rgba(37, 99, 235, 0.40)',   // Bright Blue
+                'rgba(30, 64, 175, 0.35)',   // Deep Navy Blue
+                'rgba(96, 165, 250, 0.45)'    // Soft Sky Blue
+            ];
+
+            for (let sim = 0; sim < numSims; sim++) {
+                let currentVal = initialCapital;
+                const path = [initialCapital];
+
+                for (let day = 1; day <= days; day++) {
+                    const shock = randomNormal();
+                    const dailyReturn = dailyDrift + (dailyVol * shock);
+                    currentVal = currentVal * (1 + dailyReturn);
+                    path.push(currentVal);
+                }
+
+                finalValues.push(currentVal);
+
+                datasets.push({
+                    label: `Sim ${sim + 1}`,
+                    data: path,
+                    borderColor: cobaltShades[sim % cobaltShades.length],
+                    borderWidth: 1.1,
+                    pointRadius: 0,
+                    tension: 0.15
+                });
+            }
+
+            // Calculate output statistics
+            const meanVal = finalValues.reduce((a, b) => a + b, 0) / finalValues.length;
+            const maxVal = Math.max(...finalValues);
+            const minVal = Math.min(...finalValues);
+
+            document.getElementById('stat-mean').innerText = `$${meanVal.toLocaleString('en-US', {maximumFractionDigits: 2})}`;
+            document.getElementById('stat-best').innerText = `$${maxVal.toLocaleString('en-US', {maximumFractionDigits: 2})}`;
+            document.getElementById('stat-worst').innerText = `$${minVal.toLocaleString('en-US', {maximumFractionDigits: 2})}`;
+
+            // Render Chart.js
+            const ctx = document.getElementById('monteCarloChart').getContext('2d');
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 800,
+                        easing: 'easeOutQuart'
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: '#0a0e1a',
+                            titleFont: { family: 'JetBrains Mono', size: 11 },
+                            bodyFont: { family: 'JetBrains Mono', size: 11 },
+                            callbacks: {
+                                label: (context) => `$${context.raw.toFixed(2)}`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: '#e2e0d8' },
+                            ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 10 } }
+                        },
+                        y: {
+                            grid: { color: '#e2e0d8' },
+                            ticks: { 
+                                color: '#64748b', 
+                                font: { family: 'JetBrains Mono', size: 10 },
+                                callback: (val) => `$${val.toLocaleString()}`
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Run simulation on window load
+        window.onload = function() {
+            runSimulation();
+        };
+    </script>
+</body>
+</html>
