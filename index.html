@@ -5,59 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fjorida Selica | QUANT FINANCE LIBRARY</title>
     <style>
-
+        /* RAUM STUDIO LIGHT THEME */
         body { 
             font-family: 'Inter', -apple-system, sans-serif; 
             line-height: 1.6; 
-            color: #1f2421;
+            color: #1a1a1a; 
             max-width: 850px; 
             margin: 0 auto; 
             padding: 40px 20px; 
-          
             background-color: #faf9f5;
+        }
+
         header { 
             text-align: center; 
             padding-bottom: 40px; 
-            border-bottom: 2px solid #1d4ed8; 
+            border-bottom: 3px solid #1d4ed8; 
             margin-bottom: 40px; 
         }
 
         h1 { 
             margin: 0; 
-            color: #0a0e1a; 
+            color: #0f172a; 
             font-size: 2.8rem; 
-            font-weight: 300;
+            font-weight: 300; 
             letter-spacing: 5px; 
             text-transform: uppercase; 
-
+        }
+        
         .subtitle { 
-            color: #525866; /* Muted slate subtitle */
+            color: #475569; 
             font-size: 1.2rem; 
             margin-top: 10px; 
         }
         
         .section-title { 
-            border-left: 4px solid #1d4ed8; /* COBALT BLUE ACCENT */
+            border-left: 5px solid #1d4ed8; 
             padding-left: 15px; 
             margin: 40px 0 20px; 
-            color: #0a0e1a;  
-        .paper-card { 
-            background: #ffffff; /* Crisp white editorial card */
-            padding: 24px; 
-            border-radius: 8px; 
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03); 
-            margin-bottom: 20px; 
-            border: 1px solid #e2e0d8; /* Subtle architectural border */
-            transition: all 0.3s ease; 
+            color: #0f172a; 
         }
         
+       
+        .paper-card { 
+            background: #ffffff; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); 
+            margin-bottom: 20px; 
+            border: 1px solid rgba(29, 78, 216, 0.2); 
+            
+          
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease; 
+        }
+        
+    
         .paper-card:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06); 
-            border-color: #1d4ed8; /* COBALT GLOW ON HOVER */
+            transform: translateY(-8px); 
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1); 
+            border-color: #1d4ed8; 
+        }
+        
         .paper-link { 
-            font-weight: 600; 
-            color: #1d4ed8; /* COBALT BLUE LINK */
+            font-weight: bold; 
+            color: #1d4ed8; 
             text-decoration: none; 
             font-size: 1.2rem; 
         }
@@ -68,36 +78,40 @@
         
         .abstract { 
             font-size: 0.95rem; 
-            color: #4b5563; 
+            color: #475569; 
             margin-top: 10px; 
         }
-           
-        p a { color: #1f2421; text-decoration: none; border-bottom: 1px dashed #cbd5e1; }
+        
+        /* Contact links */
+        p a { color: #1a1a1a; text-decoration: none; border-bottom: 1px dashed #666; }
         p a:hover { color: #1d4ed8; border-bottom: 1px solid #1d4ed8; }
     </style>
 </head>
 <body>
     <div style="text-align: center; padding: 20px 0;">
-        <img src="LOGO.jpg" alt="Logo" onerror="this.style.display='none'" style="width: 200px; height: auto; display: block; margin: 0 auto; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.08));">
+        <img src="LOGO.jpg" alt="Logo" style="width: 200px; height: auto; display: block; margin: 0 auto; filter: drop-shadow(0 0 10px rgba(29,78,216,0.15));">
     </div>
     <header>
         <h1>Fjorida Selica</h1>
         <p class="subtitle">Quantitative Researcher</p>
     </header>
+
     <h2 class="section-title">Latest Research Papers</h2>
 
     <div class="paper-card">
         <a href="NAME_OF_YOUR_PAPER.pdf" class="paper-link">Research Papers</a>
         <p class="abstract">These papers look at the world of finance through the lens of mathematics. By using formulas and data, they aim to turn complex market behaviors into clear, predictable models. </p>
     </div>
-    <!-- Quant Projects Section -->
-<section class="projects-section">
-    <h2 class="section-title">Quant Projects</h2>
 
-   <div class="paper-card">
-    <a href="quantitative_portfolio_research.html" class="paper-link">Monte Carlo Portfolio Simulation</a>
-    <p class="abstract">A Python-based simulation modeling multi-asset portfolio paths over 100 days using historical stock price covariance matrices and Cholesky decomposition.</p>
-</div>
+    <!-- Quant Projects Section -->
+    <section class="projects-section">
+        <h2 class="section-title">Quant Projects</h2>
+
+        <div class="paper-card">
+            <a href="quantitative_portfolio_research.html" class="paper-link">Monte Carlo Portfolio Simulation</a>
+            <p class="abstract">A Python-based simulation modeling multi-asset portfolio paths over 100 days using historical stock price covariance matrices and Cholesky decomposition.</p>
+        </div>
+    </section>
 
     <h2 class="section-title">Solved Exercises & Technical Problems</h2>
 
@@ -112,6 +126,7 @@
         <a href="EXERCISE_FILENAME_2.pdf" class="paper-link">Probability theories and Calculus for QF</a>
         <p class="abstract">A collection of solved problems regarding Probability and Calculus used in Finance. </p>
     </div>
+
     <div class="paper-card">
         <span style="color: #1d4ed8; font-weight: bold; font-size: 0.8rem; text-transform: uppercase;">Financial Math</span><br>
         <a href="EXERCISE_FILENAME_1.pdf" class="paper-link">Bonds, Discrete and Continuous Time</a>
@@ -122,5 +137,6 @@
     <p>📧 Email: <a href="mailto:fjorida.selica@hotmail.com">fjorida.selica@hotmail.com</a></p>
     <p>📧 Institutional E-mail: <a href="mailto:fjorida.selica@studio.unibo.it">fjorida.selica@studio.unibo.it</a></p>
     <p>🔗 LinkedIn: <a href="https://www.linkedin.com/in/fjorida-s-a287623b9/">View Profile</a></p>
-    </body>
+
+</body>
 </html>
