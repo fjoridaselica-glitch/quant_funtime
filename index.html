@@ -5,77 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fjorida Selica | QUANT FINANCE LIBRARY</title>
     <style>
-        /* QUANT FINANCE DARK THEME */
+
         body { 
             font-family: 'Inter', -apple-system, sans-serif; 
             line-height: 1.6; 
-            color: #dcdcdc; 
+            color: #1f2421;
             max-width: 850px; 
             margin: 0 auto; 
             padding: 40px 20px; 
-            
-            /* MOVING BACKGROUND EFFECT */
-            background: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #1a1a2e);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-            background-attachment: fixed; /* Keeps background still while you scroll */
-        }
-
-        /* The math that makes the background move */
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
+          
+            background-color: #faf9f5;
         header { 
             text-align: center; 
             padding-bottom: 40px; 
-            border-bottom: 3px solid #b388ff; /* PURPLE NEON ACCENT */
+            border-bottom: 2px solid #1d4ed8; 
             margin-bottom: 40px; 
         }
+
         h1 { 
-    margin: 0; 
-    color: #ffffff; 
-    font-size: 2.8rem; 
-    font-weight: 300; /* Makes it thinner and more elegant */
-    letter-spacing: 5px; /* Adds space between letters */
-    text-transform: uppercase; /* Makes it look like a high-end brand */
-}
-        
+            margin: 0; 
+            color: #0a0e1a; 
+            font-size: 2.8rem; 
+            font-weight: 300;
+            letter-spacing: 5px; 
+            text-transform: uppercase; 
+
         .subtitle { 
-            color: #b3b3b3; /* MUTED SUBTITLE */
+            color: #525866; /* Muted slate subtitle */
             font-size: 1.2rem; 
             margin-top: 10px; 
         }
         
         .section-title { 
-            border-left: 5px solid #b388ff; /* PURPLE NEON ACCENT */
+            border-left: 4px solid #1d4ed8; /* COBALT BLUE ACCENT */
             padding-left: 15px; 
             margin: 40px 0 20px; 
-            color: #ffffff; 
-        }
-        
+            color: #0a0e1a;  
         .paper-card { 
-            background: rgba(52, 73, 94, 0.8); /* 0.8 makes it slightly transparent */
-            backdrop-filter: blur(10px); /* Blurs the moving background behind the card */
-            padding: 20px; 
-            border-radius: 10px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
+            background: #ffffff; /* Crisp white editorial card */
+            padding: 24px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03); 
             margin-bottom: 20px; 
-            border: 1px solid rgba(179, 136, 255, 0.3); 
+            border: 1px solid #e2e0d8; /* Subtle architectural border */
             transition: all 0.3s ease; 
         }
         
         .paper-card:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 8px 15px rgba(0,0,0,0.3); 
-            border-color: #b388ff; /* GLOW ON HOVER */
-        }
-        
+            transform: translateY(-3px); 
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06); 
+            border-color: #1d4ed8; /* COBALT GLOW ON HOVER */
         .paper-link { 
-            font-weight: bold; 
-            color: #cc99ff; /* LIGHT PURPLE LINK */
+            font-weight: 600; 
+            color: #1d4ed8; /* COBALT BLUE LINK */
             text-decoration: none; 
             font-size: 1.2rem; 
         }
@@ -86,24 +68,22 @@
         
         .abstract { 
             font-size: 0.95rem; 
-            color: #c0c0c0; /* GREY ABSTRACT */
+            color: #4b5563; 
             margin-top: 10px; 
         }
-        
-        /* Contact links need a light color too */
-        p a { color: #dcdcdc; text-decoration: none; border-bottom: 1px dashed #666; }
-        p a:hover { color: #b388ff; border-bottom: 1px solid #b388ff; }
+           
+        p a { color: #1f2421; text-decoration: none; border-bottom: 1px dashed #cbd5e1; }
+        p a:hover { color: #1d4ed8; border-bottom: 1px solid #1d4ed8; }
     </style>
 </head>
 <body>
     <div style="text-align: center; padding: 20px 0;">
-        <img src="LOGO.jpg" alt="Logo" style="width: 200px; height: auto; display: block; margin: 0 auto; filter: drop-shadow(0 0 10px rgba(179,136,255,0.3));">
+        <img src="LOGO.jpg" alt="Logo" onerror="this.style.display='none'" style="width: 200px; height: auto; display: block; margin: 0 auto; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.08));">
     </div>
     <header>
         <h1>Fjorida Selica</h1>
         <p class="subtitle">Quantitative Researcher</p>
     </header>
-
     <h2 class="section-title">Latest Research Papers</h2>
 
     <div class="paper-card">
@@ -122,19 +102,18 @@
     <h2 class="section-title">Solved Exercises & Technical Problems</h2>
 
     <div class="paper-card">
-        <span style="color: #b388ff; font-weight: bold; font-size: 0.8rem; text-transform: uppercase;">Actuarial Math</span><br>
+        <span style="color: #1d4ed8; font-weight: bold; font-size: 0.8rem; text-transform: uppercase;">Actuarial Math</span><br>
         <a href="EXERCISE_FILENAME_1.pdf" class="paper-link">Non-life and Life Insurance Exercises - Ruin Theory</a>
         <p class="abstract">Detailed solutions for exercises in Actuarial Math - Master's level.</p>
     </div>
 
     <div class="paper-card">
-        <span style="color: #b388ff; font-weight: bold; font-size: 0.8rem; text-transform: uppercase;">Probability & Calculus</span><br>
+        <span style="color: #1d4ed8; font-weight: bold; font-size: 0.8rem; text-transform: uppercase;">Probability & Calculus</span><br>
         <a href="EXERCISE_FILENAME_2.pdf" class="paper-link">Probability theories and Calculus for QF</a>
         <p class="abstract">A collection of solved problems regarding Probability and Calculus used in Finance. </p>
     </div>
-
     <div class="paper-card">
-        <span style="color: #b388ff; font-weight: bold; font-size: 0.8rem; text-transform: uppercase;">Financial Math</span><br>
+        <span style="color: #1d4ed8; font-weight: bold; font-size: 0.8rem; text-transform: uppercase;">Financial Math</span><br>
         <a href="EXERCISE_FILENAME_1.pdf" class="paper-link">Bonds, Discrete and Continuous Time</a>
         <p class="abstract">Solutions for exercises in Option and Futures Pricing, Bonds and Credit Derivatives.</p>
     </div>
@@ -143,6 +122,5 @@
     <p>📧 Email: <a href="mailto:fjorida.selica@hotmail.com">fjorida.selica@hotmail.com</a></p>
     <p>📧 Institutional E-mail: <a href="mailto:fjorida.selica@studio.unibo.it">fjorida.selica@studio.unibo.it</a></p>
     <p>🔗 LinkedIn: <a href="https://www.linkedin.com/in/fjorida-s-a287623b9/">View Profile</a></p>
-
-</body>
+    </body>
 </html>
